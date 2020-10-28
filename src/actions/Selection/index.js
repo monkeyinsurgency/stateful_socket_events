@@ -1,25 +1,25 @@
-import {
-  UPDATE_SELECTION_STATE,
-  UPDATE_SELECTION_PRICE,
-  UPDATE_COUNTER,
-} from "./types";
+import { BUILD_SELECTIONS } from "./types";
 
-export const updateSelectionState = (id, active) => {
-  return {
-    type: UPDATE_SELECTION_STATE,
-    payload: {
-      id,
-      active,
-    },
-  };
+export const addToSelections = (selection) => (dispatch, getState) => {
+  if (!selection.active) return false;
+
+  const selectedEvents = getState().selections.selections.slice();
+
+  let alreadyExists = false;
+  selectedEvents.forEach((x) => {
+    if (x.id === selection.id) {
+      alreadyExists = true;
+    }
+  });
+  if (!alreadyExists && selection.active) {
+    selectedEvents.push({ ...selection });
+  } else {
+    selectedEvents.pop({ ...selection });
+  }
+
+  dispatch({
+    type: BUILD_SELECTIONS,
+    payload: { selection, selectedEvents },
+  });
 };
 
-export const updateSelectionPrice = (id, price) => {
-  return {
-    type: UPDATE_SELECTION_PRICE,
-    payload: {
-      id,
-      price,
-    },
-  };
-};

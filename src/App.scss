@@ -1,0 +1,58 @@
+@import "~bootstrap/scss/bootstrap";
+
+.App {
+  text-align: center;
+}
+
+.selection-bit {
+  padding: 2em;
+  border-bottom: 5px dotted black;
+  margin-bottom: 2em;
+}
+
+table {
+  width: 100%;
+  border: 1px solid black;
+  margin: 2em 0;
+  
+  thead td {
+    background-color: black;
+    color: white;
+    font-weight: bold;
+    padding: 1em;
+  }
+
+  tr.active:hover {
+    cursor: pointer;
+    background-color: #ccffff;
+  }
+
+  tr.disabled {
+    background-color: #ccc !important;
+    cursor: not-allowed !important;
+  }
+
+  td {
+    width: 50%;
+  }
+}
+
+.disabled {
+  tr {
+    background-color: #ccc;
+  }
+  h4 {
+    color: #ccc;
+  }
+  tr.active:hover {
+    background-color: #ccc !important;
+    cursor: not-allowed !important;
+  }
+}
+
+ul,
+li {
+  list-style-type: none;
+  padding-left: 0;
+  margin-left: 0;
+}

@@ -2,19 +2,14 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { fetchEvents } from "../actions/EventsList";
+import { addToSelections } from "../actions/Selection";
 
 class EventsList extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      selectedEvents: null,
-    };
-  }
   componentDidMount() {
     this.props.fetchEvents();
   }
+
   render() {
-    const { selectedEvents } = this.state;
     return (
       <div>
         {!this.props.events ? (
@@ -23,26 +18,44 @@ class EventsList extends Component {
           <ul className="event-list">
             {this.props.events.map((eventItem) => (
               <li key={eventItem.id}>
-                {eventItem.id + ' ' + eventItem.name}
+                <h2>{eventItem.name}</h2>
                 <ul>
                   {eventItem.subcat.map((thisSubcat) => (
                     <li key={thisSubcat.id}>
-                      {thisSubcat.id + ' ' + thisSubcat.name + ' ' + String(thisSubcat.active)}
+                      <h3>{thisSubcat.name}</h3>
                       <ul>
                         {thisSubcat.event.map((thisEvent) => (
-                          <li key={thisEvent.id}>
-                            {thisEvent.id + ' ' + thisEvent.name + ' ' + String(thisEvent.active)}
+                          <li
+                            key={thisEvent.id}
+                            className={thisEvent.active ? `active` : `disabled`}
+                          >
+                            <h4>{thisEvent.name}</h4>
                             <table className="selection">
+                              <thead>
+                                <tr>
+                                  <td>Name</td>
+                                  <td>Price</td>
+                                </tr>
+                              </thead>
                               <tbody>
                                 {thisEvent.selection.map((thisSelection) => (
-                                  <tr key={thisSelection.id}>
-                                    <td>
-                                      <input type="checkbox"></input>
+                                  <tr
+                                    key={thisSelection.id}
+                                    className={
+                                      thisSelection.active
+                                        ? `active`
+                                        : `disabled`
+                                    }
+                                    onClick={() =>
+                                      this.props.addToSelections(thisSelection)
+                                    }
+                                  >
+                                    <td className="name">
+                                      {thisSelection.name}{" "}
                                     </td>
-                                    <td>ID: {thisSelection.id}</td>
-                                    <td>Name: {thisSelection.name} </td>
-                                    <td>Price: {thisSelection.price} </td>
-                                    <td>Active: {String(thisSelection.active)}</td>
+                                    <td className="price">
+                                      {thisSelection.price}{" "}
+                                    </td>
                                   </tr>
                                 ))}
                               </tbody>
@@ -69,7 +82,8 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) =>
   bindActionCreators(
     {
-      fetchEvents: fetchEvents,
+      fetchEvents,
+      addToSelections,
     },
     dispatch
   );

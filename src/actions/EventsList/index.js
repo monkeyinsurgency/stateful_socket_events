@@ -1,10 +1,10 @@
 import {
-  FETCH_EVENTS,
   FETCH_EVENTS_ERROR,
   FETCH_EVENTS_PENDING,
   FETCH_EVENTS_SUCCESS,
   UPDATE_EVENT_STATE,
-  SELECT_EVENT,
+  UPDATE_SELECTION_PRICE,
+  UPDATE_SELECTION_STATE,
 } from "./types";
 
 export const fetchEventsPending = () => {
@@ -27,7 +27,7 @@ export const fetchEventsError = (error) => {
   };
 };
 
-export const fetchEvents = () => (dispatch, getState) => {
+export const fetchEvents = () => (dispatch) => {
   dispatch(fetchEventsPending());
   fetch("http://localhost:3001/api/selections/")
     .then((res) => res.json())
@@ -49,6 +49,26 @@ export const updateEventState = (id, active) => {
     payload: {
       id,
       active,
+    },
+  };
+};
+
+export const updateSelectionState = (id, active) => {
+  return {
+    type: UPDATE_SELECTION_STATE,
+    payload: {
+      id,
+      active,
+    },
+  };
+};
+
+export const updateSelectionPrice = (id, newPrice) => {
+  return {
+    type: UPDATE_SELECTION_PRICE,
+    payload: {
+      id,
+      newPrice,
     },
   };
 };

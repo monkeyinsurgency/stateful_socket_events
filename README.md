@@ -1,10 +1,16 @@
-I ran out of time on this.  I'm on the right path, but didn't complete the task.
+I have ticked all the boxes aside from one - if selected event active state changes to 'false', it remains in the selected group.  I could not suss that bit out.
 
-I rendered out the event tree just fine, had a good idea of what to do, but this is my first exposure to WebSockets and there was more of a learning curve than I expected when it came to integrating WS with Redux.
-
-I'm dispatching from WS fine; I think I have overlooked hooking up an action correctly as Redux state does not seem to be updating, and with the clock running out I feel it's best to show the progress where it stands and submit for review.
+Events may be selected/deselected by clicking.  Inactive events are not clickable and this is represented by a grey background.
 
 Store is managed by Redux and Websocket utilises React Context.
+
+**TODO** 
+* WRITE TESTS.  I have to be somewhere in 15 minutes and need to bounce.  The event state thing got stuck in.
+* Remove selected events from list when event state switches to inactive.
+
+Fixes to server: 
+* `selectionPriceChange` sent price instead of ID.  Since been corrected.  Also, updated to generate proper random numbers.
+* `selectionStateChange` no longer sends updated price.
 
 #
 To run the project Install project packages:

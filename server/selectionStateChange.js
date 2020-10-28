@@ -6,10 +6,9 @@ module.exports = (data, socket) => {
         category.subcat.forEach(subcat => {
             subcat.event.forEach(event => {
                 event.selection.forEach(selection => {
-                    const { id, price } = selection;
+                    const { id } = selection;
                     selections.push({
                         active: Math.random() >= 0.5,
-                        price,
                         id
                     });
                 });

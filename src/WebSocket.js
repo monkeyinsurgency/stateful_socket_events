@@ -1,11 +1,14 @@
 import React, { createContext } from "react";
 import io from "socket.io-client";
 import { useDispatch } from "react-redux";
-import { updateEventState } from "./actions/EventsList";
 import {
+  updateEventState,
   updateSelectionPrice,
   updateSelectionState,
-} from "./actions/Selection";
+} from "./actions/EventsList";
+// import {
+
+// } from "./actions/Selection";
 
 const WebSocketContext = createContext(null);
 
@@ -21,17 +24,15 @@ export default ({ children }) => {
     socket = io.connect("http://localhost:3001");
 
     socket.on("selectionPriceUpdate", (data) => {
-      console.log("selectionPriceUpdate", data);
       dispatch(updateSelectionPrice(data.id, data.newPrice));
     });
 
-    socket.on("SelectionStateUpdate", (data) => {
-      console.log("selectionStateUpdate", data);
+    socket.on("selectionStateUpdate", (data) => {
       dispatch(updateSelectionState(data.id, data.active));
     });
 
     socket.on("eventStateUpdate", (data) => {
-      console.log("eventStateUpdate", data);
+
       dispatch(updateEventState(data.id, data.active));
     });
 

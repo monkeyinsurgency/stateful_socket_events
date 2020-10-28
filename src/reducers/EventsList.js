@@ -1,17 +1,13 @@
-import { update } from "lodash/fp";
 import _ from "lodash";
-import deepdash from "deepdash-es";
 
 import {
-  FETCH_EVENTS,
   FETCH_EVENTS_ERROR,
   FETCH_EVENTS_SUCCESS,
   FETCH_EVENTS_PENDING,
   UPDATE_EVENT_STATE,
-  SELECT_EVENT,
+  UPDATE_SELECTION_PRICE,
+  UPDATE_SELECTION_STATE,
 } from "../actions/EventsList/types";
-
-//const _ = deepdash(lodash);
 
 const initialState = {
   pending: false,
@@ -20,6 +16,7 @@ const initialState = {
 };
 
 export const EventsListReducer = (state = initialState, action) => {
+  var updatedState;
   switch (action.type) {
     case FETCH_EVENTS_PENDING:
       return {
@@ -38,8 +35,9 @@ export const EventsListReducer = (state = initialState, action) => {
         pending: false,
         error: action.error,
       };
-    case UPDATE_EVENT_STATE:
-      var updatedState = _.cloneDeep(state);
+    
+      case UPDATE_EVENT_STATE:
+      updatedState = _.cloneDeep(state);
 
       for (const event of updatedState.events) {
         for (const subcatItem of event.subcat) {
@@ -47,6 +45,38 @@ export const EventsListReducer = (state = initialState, action) => {
             (node) => node.id === action.payload.id
           );
           if (foundEvent) foundEvent.active = action.payload.active;
+        }
+      }
+
+    return updatedState;
+
+    case UPDATE_SELECTION_STATE:
+      updatedState = _.cloneDeep(state);
+
+      for (const event of updatedState.events) {
+        for (const subcatItem of event.subcat) {
+          for (const eventItem of subcatItem.event) {
+            const foundSelection = eventItem.selection.find(
+              (node) => node.id === action.payload.id
+            );
+            if (foundSelection) foundSelection.active = action.payload.active;
+          }
+        }
+      }
+
+    return updatedState;
+
+    case UPDATE_SELECTION_PRICE:
+      updatedState = _.cloneDeep(state);
+
+      for (const event of updatedState.events) {
+        for (const subcatItem of event.subcat) {
+          for (const eventItem of subcatItem.event) {
+            const foundSelection = eventItem.selection.find(
+              (node) => node.id === action.payload.id
+            );
+            if (foundSelection) foundSelection.price = action.payload.newPrice;
+          }
         }
       }
 
